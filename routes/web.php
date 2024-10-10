@@ -21,4 +21,5 @@ Route::get('/sell-product', function () {
     return view('sellProduct');
 });
 
+// TODO: Add a route to handle the form submission
 // Route::post('/sell-product', 'ProductController@sellProduct');
