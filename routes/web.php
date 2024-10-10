@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\Counter;
+use App\Http\Livewire\LoginController;
+use App\Http\Livewire\RegisterController;
+use App\Http\Livewire\UploadTest;
+
+$host = parse_url(config('app.url'), PHP_URL_HOST);
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +22,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home');
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('/auth')->group(function () {
+    Route::get('/login', LoginController::class)->name('login');
+    Route::get('/register', RegisterController::class)->name('register');
+});
+
+
+Route::get('/counter', Counter::class);
+Route::get('/upload', UploadTest::class);
