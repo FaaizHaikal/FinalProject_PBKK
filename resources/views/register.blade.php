@@ -1,5 +1,5 @@
 <!-- resources/views/register.blade.php -->
-@section('title', 'Shop - Register')
+@extends('layouts.app')
 
 
 <div class="h-screen w-full">
@@ -36,6 +36,7 @@
 
 
                 <form class="mx-auto max-w-sm" wire:submit.prevent="register">
+                @csrf <!-- Include CSRF token for security -->
                     <div class="relative mb-4">
                         <label for="email"
                             class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Email</label>
@@ -78,12 +79,6 @@
                     </div>
                     @endif
 
-                    @if ($is_submitting)
-                    <div class="text-xs text-red-600 mt-3">
-                        Email or Username has already exist
-                    </div>
-                    @endif
-
                     <div class="my-6 flex items-start">
                         <div class="flex h-5 items-center">
                             <input id="remember" type="checkbox" value=""
@@ -109,7 +104,7 @@
 <script>
     window.addEventListener('user-created', event => {
         // Store the user ID in local storage or session storage
-        localStorage.setItem('user_id', event.detail.userId);
+        //localStorage.setItem('user_id', event.detail.userId);
         window.location.href = '/auth/login'; 
     });
 </script>

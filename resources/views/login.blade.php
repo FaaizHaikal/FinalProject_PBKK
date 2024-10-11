@@ -33,22 +33,22 @@
                 </div>
 
 
-
+    
                 <form class="mx-auto max-w-sm" wire:submit.prevent="login">
                     <div class="relative mb-4">
-                        <label for="text"
+                        <label for="email"
                             class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Identity</label>
                         <div class="pointer-events-none absolute inset-y-0 start-0 mt-7 flex items-center ps-3.5">
-                            <img src="{{ asset('svg/email-logo.svg') }}" class="h-4 w-4 text-gray-500"
+                            <img src="{{ asset('svg/user-logo.svg') }}" class="h-4 w-4 text-gray-500"
                                 alt="Email Logo" />
                         </div>
 
-                        <input type="text" id="text" wire:model="username_or_email"
+                        <input type="text" id="email" wire:model="username_or_email"
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                            placeholder="Enter your email or username" required />
+                            placeholder="Enter your email or username" required autocomplete="off"/>
                     </div>
 
-                    <div class="relative mb-5">
+                    <div class="relative">
                         <label for="password"
                             class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Password</label>
                         <div class="pointer-events-none absolute inset-y-0 start-0 mt-7 flex items-center ps-3">
@@ -56,10 +56,22 @@
                         </div>
                         <input type="password" id="password" wire:model="password"
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                            placeholder="Enter your password" required />
+                            placeholder="Enter your password" required autocomplete="off" />
                     </div>
 
-                    <div class="mb-6 flex items-start">
+                    @if ($errors->has('email'))
+                        <div class="text-xs text-red-600 mt-2">
+                            {{ $errors->first('email') }}
+                        </div>
+                    @endif
+
+                    @if ($errors->has('username'))
+                        <div class="text-xs text-red-600 mt-2">
+                            {{ $errors->first('username') }}
+                        </div>
+                    @endif
+
+                    <div class="my-6 flex items-start">
                         <div class="flex h-5 items-center">
                             <input id="remember" type="checkbox" value=""
                                 class="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300"
@@ -72,10 +84,17 @@
 
 
                     <button type="submit"
-                        class="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto">Submit</button>
+                        class="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">Submit</button>
                 </form>
 
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    window.addEventListener('user-login', event => {
+        localStorage.setItem('user_id', event.detail.userId);
+        console.log( event.detail.userId)
+    });
+</script>
