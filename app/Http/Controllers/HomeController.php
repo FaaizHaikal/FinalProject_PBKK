@@ -16,10 +16,6 @@ class HomeController extends Controller
        $username = $user->username;
        $email = $user->email;
 
-       Log::info($userId);
-       Log::info($username);
-       Log::info($email);
-
        return view('home', compact('userId', 'username', 'email'));
     }
 

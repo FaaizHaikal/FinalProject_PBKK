@@ -78,7 +78,7 @@
                                 required />
                         </div>
                         <label for="remember" class="ms-2 text-sm font-medium text-gray-900">
-                            remember login info
+                            Remember me
                         </label>
                     </div>
 
