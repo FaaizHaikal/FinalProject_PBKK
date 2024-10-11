@@ -37,6 +37,13 @@ Route::prefix('/auth')->group(function () {
     Route::get('/register', RegisterController::class)->name('register');
 });
 
+Route::get('/sell-product', function () {
+    return view('sellProduct');
+});
+
+// TODO: Add a route to handle the form submission
+// Route::post('/sell-product', 'ProductController@sellProduct');
+
 
 Route::get('/counter', Counter::class)->middleware('auth');
 Route::get('/upload', UploadTest::class);
