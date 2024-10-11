@@ -1,6 +1,5 @@
 <!-- resources/views/register.blade.php -->
-@extends('layouts.app')
-
+@section('title', 'Shop - Register')
 
 <div class="h-screen w-full">
     <div class="h-full w-full bg-[rgb(242,242,242)] bg-cover bg-center bg-no-repeat"

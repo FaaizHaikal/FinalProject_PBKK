@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
+use Livewire\Attributes\Locked;
 use Tuupola\Ksuid;
 use App\Models\User;
 use Livewire\Component;
@@ -20,7 +21,7 @@ class RegisterController extends Component
     public $username = '';
     #[Validate('required')] 
     public $password = '';
-
+    #[Locked]
     public $error_registered = false;
 
 
@@ -45,14 +46,15 @@ class RegisterController extends Component
             
             // Optionally, send user ID back to the frontend
             $this->dispatch('user-created', userId:  $ksuid);
-            $this->success_registered = true;
             return response()->json(['message' => 'User created successfully!', 'userid' =>  $ksuid], 201);
     
         } catch (ModelNotFoundException $e) {
             Log::error('User creation failed: ' . $e->getMessage());
+            $this->error_registered = true;
             return response()->json(['error' => 'User creation failed.'], 404);
         } catch (Exception $e) {
             Log::error('User creation failed: ' . $e->getMessage());
+            $this->error_registered = true;
             return response()->json(['error' => 'An unexpected error occurred.'], 500);
         }
     }
