@@ -23,11 +23,38 @@
 </head>
 
 <body>
-    <header class="antialiased shadow-sm">
-        <x-navbar :username="$username" :email="$email" />
-    </header>
+    <div class="w-full h-screen relative">
+        <header class="antialiased shadow-sm">
+            <x-navbar :username="$username" :email="$email" />
+        </header>
 
-    <div class="container mt-5">
+        <div class=" flex w-full justify-center">
+
+            <div id="default-carousel" class="relative w-[25%] mt-8" data-carousel="slide">
+                <!-- Carousel wrapper -->
+                <div class="relative h-72 overflow-hidden rounded-xl">
+                    <!-- Item 1 -->
+                    <div class="hidden duration-1000 ease-in-out" data-carousel-item>
+                        <img src="{{ asset('image/girl-shoe1.jpg') }}"
+                            class="absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2 object-cover" alt="...">
+                    </div>
+                    <!-- Item 2 -->
+                    <div class="hidden duration-1000 ease-in-out" data-carousel-item>
+                        <img src="{{ asset('image/girl-shoe2.jpg') }}"
+                            class="absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2 object-cover" alt="...">
+                    </div>
+                </div>
+                <!-- Slider indicators -->
+                <div class="absolute bottom-2 left-1/2 z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse">
+                    <button type="button" class="h-3 w-3 rounded-full" aria-current="true" aria-label="Slide 1"
+                        data-carousel-slide-to="0"></button>
+                    <button type="button" class="h-3 w-3 rounded-full" aria-current="false" aria-label="Slide 2"
+                        data-carousel-slide-to="1"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-5">
         <div class="jumbotron text-center">
             <h1>Selamat datang di (insert nama toko here)</h1>
             <p class="lead">Temukan produk berkualitas dengan harga terjangkau!</p>
@@ -75,6 +102,12 @@
         <p>&copy; 2024 (nama toko). All Rights Reserved.</p>
     </footer>
 
+
+        
+
+    </div>
+
+
     <script>
         window.addEventListener('user-logout', event => {
             localStorage.removeItem('user_id');
@@ -91,17 +124,18 @@
                 },
                 body: JSON.stringify({ key: 'value' }),
             })
-            .then(response => {
-                if (response.redirected) {
-                    localStorage.removeItem('user_id');
-                    window.location.href = response.url;
-             }
-            })
-            .catch(error => console.error('Error:', error));
+                .then(response => {
+                    if (response.redirected) {
+                        localStorage.removeItem('user_id');
+                        window.location.href = response.url;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         });
     </script>
 
 </body>
+
 </html>
 
 </html>

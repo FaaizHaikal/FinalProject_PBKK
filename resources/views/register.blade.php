@@ -95,6 +95,14 @@
                     <button type="submit"
                         class="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">Submit</button>
                 </form>
+                <div class="mt-4 ml-1 text-xs font-semibold item-center text-center">
+                    <span class="text-gray-600">
+                        Already have an account ?
+                    </span>
+                    <a class="text-blue-600 hover:underline" href="/auth/login">
+                       Login here
+                    </a>
+                </div>
             </div>
         </div>
     </div>
