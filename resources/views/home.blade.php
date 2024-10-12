@@ -56,7 +56,7 @@
 
         <div class="container mt-5">
         <div class="jumbotron text-center">
-            <h1>Selamat datang di (insert nama toko here)</h1>
+            <h1>KickVerse</h1c>
             <p class="lead">Temukan produk berkualitas dengan harga terjangkau!</p>
             <a href="#" class="btn btn-primary">Belanja Sekarang</a>
         </div>
