@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Storage;
 use Exception;
 
 class StoreController extends Component
@@ -32,6 +33,19 @@ class StoreController extends Component
         public $product_image = null;
         public $product_stock = null;
         public $product_price = null;
+
+        // form button
+        public $isFormHidden = true;
+
+        public function setFormHidden()
+        {
+            if( $this->isFormHidden == true) {
+                $this->isFormHidden = false;
+            } else {
+                $this->isFormHidden = true;
+            }
+            Log::info($this->isFormHidden);
+        }
     
 
         public function mount()
@@ -89,6 +103,20 @@ class StoreController extends Component
             }
         }
 
+        public function RemoveProduct($productId)
+        {
+            $product = Product::find($productId);
+            if ($product) {
+                if ($product->image) {
+                    Storage::disk('public')->delete($product->image);
+                }
+                $product->delete();
+                $this->products = Product::all();
+            } 
+
+        }
+
+
         public function render()
         {
             $user = User::find(Auth::id());
@@ -97,8 +125,8 @@ class StoreController extends Component
             $username = $user->username;
             $email = $user->email;
             $store_name = $user->store_name;
-            $products = Product::where('user_id', $userId)->get();
+            $this->products = Product::where('user_id', $userId)->get();
 
-            return view('store', compact('userId', 'username', 'email', 'store_name', 'products'))->layout('layouts.app');
+            return view('store', compact('userId', 'username', 'email', 'store_name'))->layout('layouts.app');
         }
 }

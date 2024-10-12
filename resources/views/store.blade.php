@@ -34,75 +34,109 @@
         @endif
 
         @if ($isHaveStore)
-            <div class="item-center text-center mt-8 font-semibold text-4xl">
+            <div class="item-center mt-8 text-center text-4xl font-semibold">
                 Welcome to your store, {{ $store_name }}!
             </div>
             <div class="flex justify-center">
-                <button id="add-product-btn" class="block m-6 w-full p-3 bg-teal-400 border border-gray-200 rounded-lg shadow hover:bg-teal-300">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Add Product to Sale</h5>
+                <button id="add-product-btn" wire:click="setFormHidden"
+                    class="m-6 block w-full rounded-lg border border-gray-200 bg-teal-400 p-3 shadow hover:bg-teal-300">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Add Product to Sale
+                    </h5>
                 </button>
             </div>
 
-            <div id="product-form-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10 hidden">
-                <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg md:max-w-2xl lg:max-w-4xl relative">
-                    <button id="close-modal-btn" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                    <form class="w-full" wire:submit.prevent="AddProduct">
-                        <div class="mb-5">
-                            <label for="product-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Name</label>
-                            <input type="text" id="product-name" wire:model="product_name" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required />
-                        </div>
-                        <div class="mb-5">
-                            <label for="product-description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description (optional)</label>
-                            <textarea id="product-description" rows="5" wire:model="product_description" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>
-                        </div>
-                        <div class="mb-5">
-                            <label class="block text-sm font-medium text-gray-900 dark:text-white" for="product-image">Product Image</label>
-                            <p class="text-sm mb-1 text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG, or PNEG</p>
-                            <input wire:model="product_image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="product-image-help" id="product-image" type="file" accept=".svg, .png, .jpg, .jpeg" required>
-                        </div>
-                        <div class="mb-5">
-                            <label for="stock-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stocks:</label>
-                            <div class="relative flex items-center w-1/6">
-                                <button type="button" id="decrement-button" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
-                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
-                                    </svg>
-                                </button>
-                                <input type="number" id="stock-input" wire:model="product_stock" class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="1" min="1" required />
-                                <button type="button" id="increment-button" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
-                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="mb-5">
-                            <label for="product-price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
-                                    <span class="text-gray-500 dark:text-gray-400 text-sm">IDR</span>
-                                </div>
-                                <input type="number" id="product-price" wire:model="product_price" class="block p-2.5 w-full z-20 ps-10 text-sm text-gray-900 bg-gray-50 rounded-s-lg border-e-gray-50 border-e-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-e-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="" required />
-                            </div>
-                        </div>
-                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Put on sale
+            @if ($isFormHidden == false)
+
+                <div id="product-form-modal" class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
+                    <div class="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg md:max-w-2xl lg:max-w-4xl">
+                        <button id="close-modal-btn" wire:click="setFormHidden" class="absolute right-2 top-2 text-gray-500 hover:text-gray-700">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                                </path>
+                            </svg>
                         </button>
-                    </form>
+                        <form class="w-full" wire:submit.prevent="AddProduct">
+                            <div class="mb-5">
+                                <label for="product-name"
+                                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Product Name</label>
+                                <input type="text" id="product-name" wire:model="product_name"
+                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                    placeholder="" required />
+                            </div>
+                            <div class="mb-5">
+                                <label for="product-description"
+                                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Description
+                                    (optional)</label>
+                                <textarea id="product-description" rows="5" wire:model="product_description"
+                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                    placeholder=""></textarea>
+                            </div>
+                            <div class="mb-5">
+                                <label class="block text-sm font-medium text-gray-900 dark:text-white"
+                                    for="product-image">Product Image</label>
+                                <p class="mb-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG, or
+                                    PNEG</p>
+                                <input wire:model="product_image"
+                                    class="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
+                                    aria-describedby="product-image-help" id="product-image" type="file"
+                                    accept=".svg, .png, .jpg, .jpeg" required>
+                            </div>
+                            <div class="mb-5">
+                                <label for="stock-input"
+                                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Stocks:</label>
+                                <div class="relative flex w-1/6 items-center">
+                                    <button type="button" id="decrement-button"
+                                        class="h-11 rounded-s-lg border border-gray-300 bg-gray-100 p-3 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+                                        <svg class="h-3 w-3 text-gray-900 dark:text-white" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="M1 1h16" />
+                                        </svg>
+                                    </button>
+                                    <input type="number" id="stock-input" wire:model="product_stock"
+                                        class="block h-11 w-full border-x-0 border-gray-300 bg-gray-50 py-2.5 text-center text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                        placeholder="1" min="1" required />
+                                    <button type="button" id="increment-button"
+                                        class="h-11 rounded-e-lg border border-gray-300 bg-gray-100 p-3 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+                                        <svg class="h-3 w-3 text-gray-900 dark:text-white" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="M9 1v16M1 9h16" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-5">
+                                <label for="product-price"
+                                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Price</label>
+                                <div class="relative">
+                                    <div class="pointer-events-none absolute inset-y-0 start-0 top-0 flex items-center ps-3.5">
+                                        <span class="text-sm text-gray-500 dark:text-gray-400">IDR</span>
+                                    </div>
+                                    <input type="number" id="product-price" wire:model="product_price"
+                                        class="z-20 block w-full rounded-s-lg border border-e-2 border-gray-300 border-e-gray-50 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-e-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
+                                        placeholder="" required />
+                                </div>
+                            </div>
+                            <button type="submit"
+                                class="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Put on sale
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            @endif
+
 
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right">
+                    <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="p-4">
                                 <div class="flex items-center">
-                                    <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <input id="checkbox-all-search" type="checkbox"
+                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800">
                                     <label for="checkbox-all-search" class="sr-only">checkbox</label>
                                 </div>
                             </th>
@@ -126,16 +160,18 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
+                    <tbody class="divide-y divide-gray-100 bg-white dark:divide-gray-700 dark:bg-gray-800">
                         @foreach ($products as $product)
                             <tr class="text-gray-700 dark:text-gray-400">
                                 <td class="p-4">
                                     <div class="flex items-center">
-                                        <input id="checkbox-{{ $product->id }}" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <input id="checkbox-{{ $product->id }}" type="checkbox"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800">
                                         <label for="checkbox-{{ $product->id }}" class="sr-only">checkbox</label>
                                     </div>
                                 </td>
-                                <th scope="row" class="px-6 py-4 font-medium text-xl text-gray-900 whitespace-nowrap dark:text-white">
+                                <th scope="row"
+                                    class="whitespace-nowrap px-6 py-4 text-xl font-medium text-gray-900 dark:text-white">
                                     {{ $product->name }}
                                 </th>
                                 <td class="px-6 py-4">
@@ -144,23 +180,25 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="text-sm text-gray-900 text-xl dark:text-gray-200">
+                                    <div class="text-sm text-xl text-gray-900 dark:text-gray-200">
                                         {{ $product->stock }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="text-sm text-gray-900 text-xl dark:text-gray-200">
+                                    <div class="text-sm text-xl text-gray-900 dark:text-gray-200">
                                         Rp. {{ $product->price }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="text-sm text-gray-900 dark:text-gray-200">
-                                        <img class="w-20 h-20 rounded-lg" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+                                        <img class="h-20 w-20 rounded-lg" src="{{ asset('storage/' . $product->image) }}"
+                                            alt="{{ $product->name }}">
                                     </div>
                                 </td>
-                                <td class="flex items-center text-xl px-6 py-4">
-                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">Remove</a>
+                                <td class="flex items-center px-6 py-4 text-xl">
+                                    <a href="#" class="font-medium text-blue-600 hover:underline dark:text-blue-500">Edit</a>
+                                    <button wire:click="RemoveProduct({{ $product->id }})"
+                                        class="ms-3 font-medium text-red-600 hover:underline dark:text-red-500">Remove</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -199,13 +237,6 @@
             .catch(error => console.error('Error:', error));
     });
 
-    document.getElementById('add-product-btn').addEventListener('click', function () {
-        document.getElementById('product-form-modal').classList.remove('hidden');
-    });
-
-    document.getElementById('close-modal-btn').addEventListener('click', function () {
-        document.getElementById('product-form-modal').classList.add('hidden');
-    });
 
     document.getElementById('increment-button').addEventListener('click', function () {
         const input = document.getElementById('stock-input');
