@@ -108,6 +108,19 @@
                                 </div>
                             </div>
                             <div class="mb-5">
+                            <label for="product-category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                            <select id="product-category" wire:model="product_category" class="block p-2.5 w-1/6 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                <option value="Basket">Basket</option>
+                                <option value="Boots">Boots</json>
+                                <option value="Casual">Casual</option>
+                                <option value="Flat shoes">Flat shoes</option>
+                                <option value="Football">Football</option>
+                                <option value="Formal">Formal</option>
+                                <option value="Heels">Heels</option>
+                                <option value="Running">Running</option>
+                            </select>
+                        </div>
+                        <div class="mb-5">
                                 <label for="product-price"
                                     class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Price</label>
                                 <div class="relative">
@@ -145,6 +158,9 @@
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Description
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Category
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Stocks

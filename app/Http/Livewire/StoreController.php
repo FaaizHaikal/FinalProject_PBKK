@@ -33,6 +33,7 @@ class StoreController extends Component
         public $product_image = null;
         public $product_stock = null;
         public $product_price = null;
+        public $product_category = null;
 
         // form button
         public $isFormHidden = true;
@@ -92,10 +93,11 @@ class StoreController extends Component
                     'image' => $imagePath,
                     'stock' => $this->product_stock,
                     'price' => $this->product_price,
+                    'category' => $this->product_category,
                     'user_id' => $this->user->id,
                 ]);
 
-                $this->reset('product_name', 'product_description', 'product_image', 'product_stock', 'product_price');
+                $this->reset('product_name', 'product_description', 'product_image', 'product_stock', 'product_price', 'product_category');
 
                 return redirect('/mystore');
             } catch (Exception $e) {
