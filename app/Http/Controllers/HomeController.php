@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Product;
 use Log;
 
 class HomeController extends Controller
@@ -15,8 +16,9 @@ class HomeController extends Controller
        $userId = $user->id;
        $username = $user->username;
        $email = $user->email;
+       $products = Product::all();
 
-       return view('home', compact('userId', 'username', 'email'));
+       return view('home', compact('userId', 'username', 'email', 'products'));
     }
 
     public function SignOut(Request $request)
