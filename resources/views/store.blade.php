@@ -34,11 +34,67 @@
         @endif
 
         @if ($isHaveStore)
-            <div class="item-center text-center mt-8 font-semibold">
-                Welcome to your store<br>
-                {{$store_name}}
+            <div class="item-center text-center mt-8 font-semibold text-4xl">
+                Welcome to your store, {{ $store_name }}!
+            </div>
+            <div class="flex justify-center">
+                <button id="add-product-btn" class="block m-6 w-full p-3 bg-teal-400 border border-gray-200 rounded-lg shadow hover:bg-teal-300">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Add Product to Sale</h5>
+                </button>
             </div>
 
+            <div id="product-form-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg md:max-w-2xl lg:max-w-4xl relative">
+                    <button id="close-modal-btn" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                    <form class="w-full" wire:submit.prevent="AddProduct">
+                        <div class="mb-5">
+                            <label for="product-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Name</label>
+                            <input type="text" id="product-name" wire:model="product_name" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required />
+                        </div>
+                        <div class="mb-5">
+                            <label for="product-description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description (optional)</label>
+                            <textarea id="product-description" rows="5" wire:model="product_description" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>
+                        </div>
+                        <div class="mb-5">
+                            <label class="block text-sm font-medium text-gray-900 dark:text-white" for="product-image">Product Image</label>
+                            <p class="text-sm mb-1 text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG, or PNEG</p>
+                            <input wire:model="product_image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="product-image-help" id="product-image" type="file" accept=".svg, .png, .jpg, .jpeg" required>
+                        </div>
+                        <div class="mb-5">
+                            <label for="stock-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stocks:</label>
+                            <div class="relative flex items-center w-1/6">
+                                <button type="button" id="decrement-button" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                    </svg>
+                                </button>
+                                <input type="number" id="stock-input" wire:model="product_stock" class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="1" min="1" required />
+                                <button type="button" id="increment-button" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <label for="product-price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
+                                    <span class="text-gray-500 dark:text-gray-400 text-sm">IDR</span>
+                                </div>
+                                <input type="number" id="product-price" wire:model="product_price" class="block p-2.5 w-full z-20 ps-10 text-sm text-gray-900 bg-gray-50 rounded-s-lg border-e-gray-50 border-e-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-e-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="" required />
+                            </div>
+                        </div>
+                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Put on sale
+                        </button>
+                    </form>
+                </div>
+            </div>
         @endif
     </div>
 </div>
@@ -68,5 +124,41 @@
                 }
             })
             .catch(error => console.error('Error:', error));
+    });
+
+    document.getElementById('add-product-btn').addEventListener('click', function () {
+        document.getElementById('product-form-modal').classList.remove('hidden');
+    });
+
+    document.getElementById('close-modal-btn').addEventListener('click', function () {
+        document.getElementById('product-form-modal').classList.add('hidden');
+    });
+
+    document.getElementById('increment-button').addEventListener('click', function () {
+        const input = document.getElementById('stock-input');
+        if (isNaN(parseInt(input.value))) {
+            input.value = 1;
+        }
+        input.value = parseInt(input.value) + 1;
+
+        input.dispatchEvent(new Event('input'));
+    });
+
+    document.getElementById('decrement-button').addEventListener('click', function () {
+        const input = document.getElementById('stock-input');
+        if (isNaN(parseInt(input.value)) || parseInt(input.value) < 1) {
+            input.value = 1;
+        }
+        if (parseInt(input.value) > 1) {
+            input.value = parseInt(input.value) - 1;
+        }
+
+        input.dispatchEvent(new Event('input'));
+    });
+
+    document.getElementById('stock-input').addEventListener('input', function () {
+        if (parseInt(this.value) < 1 || isNaN(parseInt(this.value))) {
+            this.value = 1;
+        }
     });
 </script>
