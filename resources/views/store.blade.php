@@ -196,6 +196,11 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900 text-xl dark:text-gray-200">
+                                        {{ $product->category }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
                                     <div class="text-sm text-xl text-gray-900 dark:text-gray-200">
                                         {{ $product->stock }}
                                     </div>
