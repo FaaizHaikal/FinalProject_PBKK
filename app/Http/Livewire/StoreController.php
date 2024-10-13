@@ -31,9 +31,9 @@ class StoreController extends Component
         public $product_name = null;
         public $product_description = null;
         public $product_image = null;
-        public $product_stock = null;
+        public $product_stock = 1;
         public $product_price = null;
-        public $product_category = null;
+        public $product_category = "";
 
         // form button
         public $isFormHidden = true;
@@ -47,7 +47,27 @@ class StoreController extends Component
             }
             Log::info($this->isFormHidden);
         }
-    
+
+        public function incrementStock()
+        {
+            $this->product_stock++;
+        }
+
+        public function decrementStock()
+        {
+            if (is_nan($this->product_stock) || $this->product_stock <= 1) {
+                $this->product_stock = 1;
+            } else if ($this->product_stock > 1) {
+                $this->product_stock--;
+            }
+        }
+
+        public function updatedProductStock()
+        {
+            if (is_nan($this->product_stock) || $this->product_stock <= 0) {
+                $this->product_stock = 1;
+            }
+        }
 
         public function mount()
         {
