@@ -23,158 +23,270 @@
         integrity="sha512-+2pW8xXU/rNr7VS+H62aqapfRpqFwnSQh9ap6THjsm41AxgA0MhFRtfrABS+Lx2KHJn82UOrnBKhjZOXpom2LQ=="
         crossorigin="anonymous"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        body {
+            background: linear-gradient(to right, #e0ffff, #f0f8ff);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Hero Carousel */
+        .hero-carousel {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-carousel .carousel-item {
+            height: 100%;
+        }
+
+        .hero-carousel img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        /* Category Section */
+        .category-section {
+            background-color: #f8f9fa;
+            padding: 30px 0;
+        }
+
+        .category-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 25px;
+            background-color: #eee;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .category-button:hover {
+            background-color: #ddd;
+            transform: translateY(-2px);
+        }
+
+        .category-button.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        /* Product Card */
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            flex: 0 0 calc(25% - 20px); /* 4 cards per row */
+            box-sizing: border-box;  /* Include padding and border in width */
+        }
+
+        .product-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-card img {
+            width: calc(100% - 20px); /* Reduce width for margin */
+            height: 200px;
+            object-fit: cover;
+            margin: 10px; /* Add margin to all sides */
+            margin-top: 20px;
+            border-radius: 10px; /* Add rounded corners */
+        }
+
+        .product-card .card-body {
+            padding: 20px;
+            display: flex;         /* Enable flexbox layout */
+            flex-direction: column;  /* Arrange items vertically */
+            align-items: flex-start; /* Align items to the left */
+        }
+
+        .product-card h5 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-card .price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: black; /* Change price color to black */
+        }
+
+        .btn-add-to-cart {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-top: auto;
+        }
+
+        .btn-add-to-cart:hover {
+            background-color: #0056b3;
+        }
+
+        /* Explore Our Text Styling */
+        .explore-our {
+            text-align: center;
+            margin: 40px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            white-space: nowrap;
+        }
+
+        .explore-our.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .explore-our .text-black {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .multiple-text {
+            font-size: 3rem;
+            color: #0092ed;
+            line-height: 1;            
+        }
+
+        /* Utility Class for Line Clamp */
+        .line-clamp-1 {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="relative h-screen w-full">
+    <div class="relative">
         <header class="antialiased shadow-sm">
             <x-navbar :username="$username" :email="$email" />
         </header>
 
-        <div class="flex w-full flex-col justify-center">
-            <div
-                class="my-4 bg-gradient-to-r from-blue-600 to-purple-500 bg-clip-text text-center text-3xl font-semibold text-transparent">
-                KickVerse
-            </div>
-
-            <div class="flex w-full flex-row items-center justify-center gap-12">
-                <div id="default-carousel" class="relative w-[25%]" data-carousel="slide">
-                    <!-- Carousel wrapper -->
-                    <div class="relative h-60 overflow-hidden rounded-xl">
-                        <!-- Item 1 -->
-                        <div class="hidden duration-1000 ease-in-out" data-carousel-item>
-                            <img src="{{ asset('image/girl-shoe1.jpg') }}"
-                                class="absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2 object-cover"
-                                alt="...">
-                        </div>
-                        <!-- Item 2 -->
-                        <div class="hidden duration-1000 ease-in-out" data-carousel-item>
-                            <img src="{{ asset('image/girl-shoe2.jpg') }}"
-                                class="absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2 object-cover"
-                                alt="...">
-                        </div>
+        <div class="hero-carousel">
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{{ asset('image/carousel-1.webp') }}" class="d-block w-100 img-fluid" alt="...">
                     </div>
-                    <!-- Slider indicators -->
-                    <div class="absolute bottom-2 left-1/2 z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse">
-                        <button type="button" class="h-3 w-3 rounded-full" aria-current="true" aria-label="Slide 1"
-                            data-carousel-slide-to="0"></button>
-                        <button type="button" class="h-3 w-3 rounded-full" aria-current="false" aria-label="Slide 2"
-                            data-carousel-slide-to="1"></button>
+                    <div class="carousel-item">
+                        <img src="{{ asset('image/carousel-2.webp') }}" class="d-block w-100 img-fluid" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{{ asset('image/carousel-3.webp') }}" class="d-block w-100 img-fluid" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{{ asset('image/carousel-4.webp') }}" class="d-block w-100 img-fluid" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{{ asset('image/carousel-5.webp') }}" class="d-block w-100 img-fluid" alt="...">
                     </div>
                 </div>
-                <div id="default-carousel" class="relative w-[25%]" data-carousel="slide">
-                    <!-- Carousel wrapper -->
-                    <div class="relative h-60 overflow-hidden rounded-xl">
-                        <!-- Item 1 -->
-                        <div class="hidden duration-1000 ease-in-out" data-carousel-item>
-                            <img src="{{ asset('image/nike-1.jpg') }}"
-                                class="absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2 object-cover"
-                                alt="...">
-                        </div>
-                        <!-- Item 2 -->
-                        <div class="hidden duration-1000 ease-in-out" data-carousel-item>
-                            <img src="{{ asset('image/nike.jpg') }}"
-                                class="absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2 object-cover"
-                                alt="...">
-                        </div>
-                    </div>
-                    <!-- Slider indicators -->
-                    <div class="absolute bottom-2 left-1/2 z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse">
-                        <button type="button" class="h-3 w-3 rounded-full" aria-current="true" aria-label="Slide 1"
-                            data-carousel-slide-to="0"></button>
-                        <button type="button" class="h-3 w-3 rounded-full" aria-current="false" aria-label="Slide 2"
-                            data-carousel-slide-to="1"></button>
-                    </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Explore Our Section -->
+        <div class="explore-our text-transparent">
+            <div class="text-black">Explore Our</div>
+            <span class="multiple-text text-[#0092ed]"></span>
+        </div>
+
+        <!-- Category Section -->
+        <section class="category-section">
+            <div class="container text-center">
+                <h2 class="mb-4">Shop by Category</h2>
+                <div class="d-flex justify-content-center flex-wrap mb-4">
+                    <a href="#" class="category-button">Basket</a>
+                    <a href="#" class="category-button">Boots</a>
+                    <a href="#" class="category-button">Casual</a>
+                    <a href="#" class="category-button">Flat Shoes</a>
+                    <a href="#" class="category-button">Football</a>
+                    <a href="#" class="category-button">Formal</a>
+                    <a href="#" class="category-button">Heels</a>
+                    <a href="#" class="category-button">Running</a>
                 </div>
             </div>
+        </section>
 
-        </div>
-
-        <div
-            class="my-8 w-full items-center bg-gradient-to-r bg-clip-text text-center text-2xl font-semibold text-transparent">
-            <span class="text-black">
-                Explore Our
-            </span>
-            <span class="multiple-text text-[#0ef]"></span>
-        </div>
-
-        <div class="mx-24">
-            <div class="mt-12 flex justify-center sm:flex-row md:flex-wrap md:space-x-5 md:space-y-5 gap-3 pb-10">
+        <!-- Products Section -->
+        <div class="container mt-5">
+            <div class="row d-flex flex-wrap justify-content-between"> 
                 @foreach($products as $product)
-                    <div class="w-full max-w-80 rounded-lg shadow">
-                        <a href="#" class="w-full h-fit flex justify-center items-center content-center rounded-lg my-4">
-                            <img class="rounded-lg max-h-44 object-cover" src="{{ asset('storage/' . $product->image) }}"
-                                alt="product image" />
+                    <div class="product-card mb-4">
+                        <a href="#" class="block">
+                            <img src="{{ asset('image/men-shoes.webp') }}" alt="product image" class="w-full">
                         </a>
-                        <div class="px-5 pb-4">
+                        <div class="card-body">
                             <a href="#">
-                                <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $product->name }} </h5>
+                                <h5 class="line-clamp-1 hover:text-blue-600">{{ $product->name }}</h5>
                             </a>
-                            <div class="flex items-center mt-2.5 mb-[1.5rem]">
-                                <div class="flex items-center space-x-1 rtl:space-x-reverse">
-                                    <svg class="w-4 h-4 text-yellow-300" aria-hidden="true"
+                            <div class="flex items-center justify-between w-full mt-2">
+                                <span class="price">Rp{{ number_format($product->price, 0, ',', '.') }}</span> <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-yellow-400" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
                                         <path
                                             d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
                                     </svg>
-                                    <svg class="w-4 h-4 text-yellow-300" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path
-                                            d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                    </svg>
-                                    <svg class="w-4 h-4 text-yellow-300" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path
-                                            d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                    </svg>
-                                    <svg class="w-4 h-4 text-yellow-300" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path
-                                            d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                    </svg>
-                                    <svg class="w-4 h-4 text-yellow-300" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path
-                                            d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                    </svg>
+                                    <span class="ml-1 text-sm font-medium text-gray-500">5.0</span>
                                 </div>
-                                <span
-                                    class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded ms-3">5.0</span>
                             </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-xl ml-1 font-bold text-gray-900">{{'$' . $product->price }}</span>
-                                <a href="#"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center">Add
-                                    to cart</a>
-                            </div>
+                            <button class="btn btn-add-to-cart w-full mt-2">Add to Cart</button>
                         </div>
                     </div>
-
                 @endforeach
             </div>
-
         </div>
 
-
-
-
     </div>
-
 
     <script>
         const typed = new Typed('.multiple-text', {
             strings: ['Latest Products', 'High Quality Shoes', 'Newest Models'],
-            typeSpeed: 100,
-            backSpeed: 120,
-            backDelay: 1000,
-
-            onComplete: () => {
-                setTimeout(() => {
-                    typed.reset()
-                    typed.start()
-                }, 2000);
-            },
+            typeSpeed: 30,
+            backSpeed: 20,
+            backDelay: 2000,
+            loop: true
         });
+
         window.addEventListener('user-logout', event => {
             localStorage.removeItem('user_id');
             console.log("logout")
@@ -188,7 +300,9 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ key: 'value' }),
+                body: JSON.stringify({
+                    key: 'value'
+                }),
             })
                 .then(response => {
                     if (response.redirected) {
@@ -198,12 +312,26 @@
                 })
                 .catch(error => console.error('Error:', error));
         });
-    </script>
-    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"
-        integrity="sha512-+2pW8xXU/rNr7VS+H62aqapfRpqFwnSQh9ap6THjsm41AxgA0MhFRtfrABS+Lx2KHJn82UOrnBKhjZOXpom2LQ=="
-        crossorigin="anonymous"></script>
-</body>
+        
+        // Scroll effects
+        function revealOnScroll() {
+            const elementsToReveal = document.querySelectorAll('.explore-our, .product-card');
 
-</html>
+            for (let element of elementsToReveal) {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+
+                if (elementTop < windowHeight - 100) { // Adjust the -100 value for how early the animation starts
+                    element.classList.add('show');
+                } else {
+                    element.classList.remove('show');
+                }
+            }
+        }
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll(); // Trigger on page load
+    </script>
+</body>
 
 </html>

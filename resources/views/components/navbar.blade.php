@@ -18,9 +18,9 @@
                         </svg>
                         <span class="sr-only">Toggle sidebar</span>
                     </button>
-                    <a class="mr-4 flex">
+                    <a href="/" class="mr-4 flex">
                         <img src="{{ asset('favicon/logo-64x64.png') }}" class="ml-2.5 mr-2.5 mt-0.5 h-8" />
-                        <span class="self-center whitespace-nowrap text-2xl font-semibold">Marketplace</span>
+                        <span class="self-center whitespace-nowrap text-2xl font-semibold">KickVerse</span>
                     </a>
                 </div>
 
@@ -43,7 +43,7 @@
                 <div class="flex items-center lg:order-2">
                     <!-- Notifications -->
                     <a type="button" href="/mystore"
-                        class="ml-6 mr-3 rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 p-2 text-xs font-bold text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-pink-200">My
+                        class="ml-6 mr-3 rounded-lg bg-gradient-to-br from-blue-500 to-purple-400 p-2 text-xs font-bold text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-pink-200">My
                         Store</a>
 
                     <button type="button" data-dropdown-toggle="notification-dropdown"
