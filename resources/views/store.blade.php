@@ -39,14 +39,12 @@
             </div>
             <div class="flex justify-center">
                 <button id="add-product-btn" wire:click="setFormHidden"
-                    class="m-6 block w-full rounded-lg border border-gray-200 bg-teal-400 p-3 shadow hover:bg-teal-300">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Add Product to Sale
-                    </h5>
+                    class="m-6 block w-full text-white text-xl bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                    Add Product to Sale
                 </button>
             </div>
 
             @if ($isFormHidden == false)
-
                 <div id="product-form-modal" class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
                     <div class="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg md:max-w-2xl lg:max-w-4xl">
                         <button id="close-modal-btn" wire:click="setFormHidden" class="absolute right-2 top-2 text-gray-500 hover:text-gray-700">
@@ -83,10 +81,9 @@
                                     accept=".svg, .png, .jpg, .jpeg" required>
                             </div>
                             <div class="mb-5">
-                                <label for="stock-input"
-                                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Stocks:</label>
+                                <label for="stock-input" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Stocks:</label>
                                 <div class="relative flex w-1/6 items-center">
-                                    <button type="button" id="decrement-button"
+                                    <button type="button" id="decrement-button" wire:click="decrementStock"
                                         class="h-11 rounded-s-lg border border-gray-300 bg-gray-100 p-3 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
                                         <svg class="h-3 w-3 text-gray-900 dark:text-white" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
@@ -94,10 +91,10 @@
                                                 stroke-width="2" d="M1 1h16" />
                                         </svg>
                                     </button>
-                                    <input type="number" id="stock-input" wire:model="product_stock"
+                                    <input type="number" id="stock-input" wire:model.lazy="product_stock"
                                         class="block h-11 w-full border-x-0 border-gray-300 bg-gray-50 py-2.5 text-center text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                                         placeholder="1" min="1" required />
-                                    <button type="button" id="increment-button"
+                                    <button type="button" id="increment-button" wire:click="incrementStock"
                                         class="h-11 rounded-e-lg border border-gray-300 bg-gray-100 p-3 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
                                         <svg class="h-3 w-3 text-gray-900 dark:text-white" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
@@ -108,19 +105,20 @@
                                 </div>
                             </div>
                             <div class="mb-5">
-                            <label for="product-category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                            <select id="product-category" wire:model="product_category" class="block p-2.5 w-1/6 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                <option value="Basket">Basket</option>
-                                <option value="Boots">Boots</json>
-                                <option value="Casual">Casual</option>
-                                <option value="Flat shoes">Flat shoes</option>
-                                <option value="Football">Football</option>
-                                <option value="Formal">Formal</option>
-                                <option value="Heels">Heels</option>
-                                <option value="Running">Running</option>
-                            </select>
-                        </div>
-                        <div class="mb-5">
+                                <label for="product-category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                                <select id="product-category" wire:model="product_category" class="block p-2.5 w-1/6 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                    <option value="" disabled selected>Choose here</option>
+                                    <option value="Basket">Basket</option>
+                                    <option value="Boots">Boots</option>
+                                    <option value="Casual">Casual</option>
+                                    <option value="Flat shoes">Flat shoes</option>
+                                    <option value="Football">Football</option>
+                                    <option value="Formal">Formal</option>
+                                    <option value="Heels">Heels</option>
+                                    <option value="Running">Running</option>
+                                </select>
+                            </div>
+                            <div class="mb-5">
                                 <label for="product-price"
                                     class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Price</label>
                                 <div class="relative">
@@ -256,34 +254,5 @@
                 }
             })
             .catch(error => console.error('Error:', error));
-    });
-
-
-    document.getElementById('increment-button').addEventListener('click', function () {
-        const input = document.getElementById('stock-input');
-        if (isNaN(parseInt(input.value))) {
-            input.value = 1;
-        }
-        input.value = parseInt(input.value) + 1;
-
-        input.dispatchEvent(new Event('input'));
-    });
-
-    document.getElementById('decrement-button').addEventListener('click', function () {
-        const input = document.getElementById('stock-input');
-        if (isNaN(parseInt(input.value)) || parseInt(input.value) < 1) {
-            input.value = 1;
-        }
-        if (parseInt(input.value) > 1) {
-            input.value = parseInt(input.value) - 1;
-        }
-
-        input.dispatchEvent(new Event('input'));
-    });
-
-    document.getElementById('stock-input').addEventListener('input', function () {
-        if (parseInt(this.value) < 1 || isNaN(parseInt(this.value))) {
-            this.value = 1;
-        }
     });
 </script>
