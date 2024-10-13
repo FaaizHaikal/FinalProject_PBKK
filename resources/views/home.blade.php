@@ -86,8 +86,8 @@
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.5s ease, transform 0.5s ease;
-            flex: 0 0 calc(25% - 20px); /* 4 cards per row */
-            box-sizing: border-box;  /* Include padding and border in width */
+            flex: 0 0 calc(25% - 20px);
+            box-sizing: border-box; 
         }
 
         .product-card.show {
@@ -96,19 +96,19 @@
         }
 
         .product-card img {
-            width: calc(100% - 20px); /* Reduce width for margin */
+            width: calc(100% - 20px);
             height: 200px;
             object-fit: cover;
-            margin: 10px; /* Add margin to all sides */
+            margin: 10px;
             margin-top: 20px;
-            border-radius: 10px; /* Add rounded corners */
+            border-radius: 10px;
         }
 
         .product-card .card-body {
             padding: 20px;
-            display: flex;         /* Enable flexbox layout */
-            flex-direction: column;  /* Arrange items vertically */
-            align-items: flex-start; /* Align items to the left */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
         }
 
         .product-card h5 {
@@ -119,7 +119,7 @@
         .product-card .price {
             font-size: 1.1rem;
             font-weight: bold;
-            color: black; /* Change price color to black */
+            color: black;
         }
 
         .btn-add-to-cart {
@@ -253,7 +253,7 @@
                 @foreach($products as $product)
                     <div class="product-card mb-4">
                         <a href="#" class="block">
-                            <img src="{{ asset('image/men-shoes.webp') }}" alt="product image" class="w-full">
+                            <img src="{{ asset('storage/' . $product->image) }}" alt="product image" class="w-full">
                         </a>
                         <div class="card-body">
                             <a href="#">
