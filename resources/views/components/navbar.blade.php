@@ -33,7 +33,7 @@
                                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                         </svg>
                     </div>
-                    <input type="text" name="email" id="topbar-search"
+                    <input type="text" name="email" id="searchInput"
                         class="focus:ring-primary-500 focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-white p-2.5 pl-9 text-gray-900 sm:text-sm"
                         placeholder="Search">
                 </div>

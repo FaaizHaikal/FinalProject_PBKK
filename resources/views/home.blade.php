@@ -249,9 +249,9 @@
 
         <!-- Products Section -->
         <div class="container mt-5">
-            <div class="row d-flex flex-wrap justify-content-between"> 
+            <div class="row d-flex flex-wrap justify-content-between" id="product_container"> 
                 @foreach($products as $product)
-                    <div class="product-card mb-4">
+                    <div class="product-card mb-4" id="{{ $product->id }}">
                         <a href="#" class="block">
                             <img src="{{ asset('storage/' . $product->image) }}" alt="product image" class="w-full">
                         </a>
@@ -261,11 +261,7 @@
                             </a>
                             <div class="flex items-center justify-between w-full mt-2">
                                 <span class="price">Rp{{ number_format($product->price, 0, ',', '.') }}</span> <div class="flex items-center">
-                                    <svg class="w-4 h-4 text-yellow-400" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path
-                                            d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20"> <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" /> </svg>
                                     <span class="ml-1 text-sm font-medium text-gray-500">5.0</span>
                                 </div>
                             </div>
@@ -331,6 +327,56 @@
 
         window.addEventListener('scroll', revealOnScroll);
         revealOnScroll(); // Trigger on page load
+
+        var _products;
+
+        document.addEventListener('DOMContentLoaded',  async function() {
+            _products = @json($products);
+        });
+
+        const input = document.getElementById('searchInput');
+        input.addEventListener('input', async () => {
+            filterItems(input.value)
+        });
+
+        const filterItems = async (searchTerm) => {
+            const productContainer = document.getElementById('product_container');
+            productContainer.innerHTML = ''
+
+            const filteredItems = _products.filter(product => 
+                product.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            filteredItems.forEach(DisplayProduct);
+        };
+
+        const DisplayProduct = (product) => {
+            console.log(product);
+
+            const productContainer = document.getElementById('product_container');
+            const productCard = document.createElement('div');
+
+            productCard.className = 'product-card mb-4 show';
+            productCard.id = product.id
+            productCard.innerHTML = `
+                        <a href="#" class="block">
+                            <img src="storage/${product.image}" alt="product image" class="w-full">
+                        </a>
+                        <div class="card-body">
+                            <a href="#">
+                                <h5 class="line-clamp-1 hover:text-blue-600">${product.name}</h5>
+                            </a>
+                            <div class="flex items-center justify-between w-full mt-2">
+                                <span class="price">Rp${product.price.toLocaleString()}</span> <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20"> <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" /> </svg>
+                                    <span class="ml-1 text-sm font-medium text-gray-500">5.0</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-add-to-cart w-full mt-2">Add to Cart</button>
+                        </div>
+             `;
+             productContainer.appendChild(productCard);
+        }
+
     </script>
 </body>
 
