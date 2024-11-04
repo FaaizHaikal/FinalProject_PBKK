@@ -75,10 +75,19 @@
                                     for="product-image">Product Image</label>
                                 <p class="mb-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG, or
                                     PNEG</p>
-                                <input wire:model="product_image"
-                                    class="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
-                                    aria-describedby="product-image-help" id="product-image" type="file"
-                                    accept=".svg, .png, .jpg, .jpeg" required>
+                                @if ($product_image_url)
+                                    <img class="h-20 w-20 rounded-lg" src="{{ $product_image_url }}"
+                                        alt="Product Image">
+                                    <input wire:model="product_image"
+                                        class="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
+                                        aria-describedby="product-image-help" id="product-image" type="file"
+                                        accept=".svg, .png, .jpg, .jpeg">
+                                @else
+                                    <input wire:model="product_image"
+                                        class="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
+                                        aria-describedby="product-image-help" id="product-image" type="file"
+                                        accept=".svg, .png, .jpg, .jpeg" required>
+                                @endif
                             </div>
                             <div class="mb-5">
                                 <label for="stock-input" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Stocks:</label>
@@ -215,7 +224,7 @@
                                     </div>
                                 </td>
                                 <td class="flex items-center px-6 py-4 text-xl">
-                                    <a href="#" class="font-medium text-blue-600 hover:underline dark:text-blue-500">Edit</a>
+                                    <button wire:click="EditProduct({{ $product->id }})" class="font-medium text-blue-600 hover:underline dark:text-blue-500">Edit</button>
                                     <button wire:click="RemoveProduct({{ $product->id }})"
                                         class="ms-3 font-medium text-red-600 hover:underline dark:text-red-500">Remove</button>
                                 </td>

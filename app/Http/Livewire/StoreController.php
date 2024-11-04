@@ -34,6 +34,8 @@ class StoreController extends Component
         public $product_stock = 1;
         public $product_price = null;
         public $product_category = "";
+        public $product_id = null;
+        public $product_image_url = null;
 
         // form button
         public $isFormHidden = true;
@@ -44,6 +46,14 @@ class StoreController extends Component
                 $this->isFormHidden = false;
             } else {
                 $this->isFormHidden = true;
+
+                $this->product_name = null;
+                $this->product_description = null;
+                $this->product_image = null;
+                $this->product_stock = 1;
+                $this->product_price = null;
+                $this->product_category = "";
+                $this->product_id = null;
             }
             Log::info($this->isFormHidden);
         }
@@ -98,6 +108,12 @@ class StoreController extends Component
 
         public function AddProduct(Request $request)
         {
+            if ($this->product_id != null) {
+                $this->UpdateProduct();
+
+                return;
+            }
+
             $this->user = User::find(Auth::id());
             
             try {
@@ -138,6 +154,56 @@ class StoreController extends Component
 
         }
 
+        public function UpdateProduct()
+        {
+            $this->product_image_url = substr($this->product_image_url, 9);
+            try {
+                if ($this->product_image != null) {
+                    Storage::disk('public')->delete($this->product_image_url);
+
+                    $imagePath = $this->product_image->store('products', 'public');
+                } else {
+                    $imagePath = $this->product_image_url;
+                }
+            } catch (Exception $e) {
+                Log::info($e);
+            }
+
+            Log::info("ImagePath: " . $imagePath);
+
+            try {
+                $product = Product::find($this->product_id);
+                $product->name = $this->product_name;
+                $product->description = $this->product_description;
+                $product->image = $imagePath;
+                $product->stock = $this->product_stock;
+                $product->price = $this->product_price;
+                $product->category = $this->product_category;
+                $product->save();
+
+                $this->reset('product_name', 'product_description', 'product_image', 'product_stock', 'product_price', 'product_category');
+
+                return redirect('/mystore');
+            } catch (Exception $e) {
+                Log::info($e);
+            }
+        }
+
+        public function EditProduct($productId)
+        {
+            $product = Product::find($productId);
+            if ($product) {
+                $this->product_id = $product->id;
+                $this->product_name = $product->name;
+                $this->product_description = $product->description;
+                $this->product_stock = $product->stock;
+                $this->product_price = $product->price;
+                $this->product_category = $product->category;
+                $this->product_image_url = Storage::url($product->image);
+            }
+
+            $this->setFormHidden();
+        }
 
         public function render()
         {
