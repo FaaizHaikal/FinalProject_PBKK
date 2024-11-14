@@ -69,8 +69,11 @@
             })
             .then(data => {
                 console.log(data);
-                if (data) {
+                if (data.confidence > 0.4) {
                     @this.set('top_category', data.top);
+                    @this.set('top_confidence', data.confidence);
+                } else {
+                    @this.set('top_category', 'Unknown Category');
                     @this.set('top_confidence', data.confidence);
                 }
             })
