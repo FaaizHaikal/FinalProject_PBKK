@@ -76,7 +76,7 @@
                                 <p class="mb-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG, or
                                     PNEG</p>
                                 @if ($product_image_url)
-                                    <img class="h-20 w-20 rounded-lg" src="{{ $product_image_url }}"
+                                    <img class="h-20 w-20 rounded-lg" src="data:image/jpeg;base64,{{ $product_image_url }}"
                                         alt="Product Image">
                                     <input wire:model="product_image"
                                         class="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
@@ -219,7 +219,7 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="text-sm text-gray-900 dark:text-gray-200">
-                                        <img class="h-20 w-20 rounded-lg" src="{{ asset('storage/' . $product->image) }}"
+                                        <img class="h-20 w-20 rounded-lg" src="data:image/jpeg;base64,{{ $product->image }}"
                                             alt="{{ $product->name }}">
                                     </div>
                                 </td>

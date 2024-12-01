@@ -117,7 +117,8 @@ class StoreController extends Component
             $this->user = User::find(Auth::id());
             
             try {
-                $imagePath = $this->product_image->store('products', 'public'); 
+                $base64Image = base64_encode(file_get_contents($this->product_image->getRealPath()));
+
             } catch (Exception $e) {
                 Log::info($e);
             }
@@ -126,7 +127,7 @@ class StoreController extends Component
                 $newProduct = Product::create([
                     'name' => $this->product_name,
                     'description' => $this->product_description,
-                    'image' => $imagePath,
+                    'image' => $base64Image,
                     'stock' => $this->product_stock,
                     'price' => $this->product_price,
                     'category' => $this->product_category,
@@ -145,9 +146,6 @@ class StoreController extends Component
         {
             $product = Product::find($productId);
             if ($product) {
-                if ($product->image) {
-                    Storage::disk('public')->delete($product->image);
-                }
                 $product->delete();
                 $this->products = Product::all();
             } 
@@ -156,26 +154,23 @@ class StoreController extends Component
 
         public function UpdateProduct()
         {
-            $this->product_image_url = substr($this->product_image_url, 9);
             try {
                 if ($this->product_image != null) {
-                    Storage::disk('public')->delete($this->product_image_url);
-
-                    $imagePath = $this->product_image->store('products', 'public');
+                    $base64Image = base64_encode(file_get_contents($this->product_image->getRealPath()));
                 } else {
-                    $imagePath = $this->product_image_url;
+                    $base64Image = $this->product_image_url;
                 }
             } catch (Exception $e) {
                 Log::info($e);
             }
 
-            Log::info("ImagePath: " . $imagePath);
+            Log::info("ImagePath: " . $base64Image);
 
             try {
                 $product = Product::find($this->product_id);
                 $product->name = $this->product_name;
                 $product->description = $this->product_description;
-                $product->image = $imagePath;
+                $product->image = $base64Image;
                 $product->stock = $this->product_stock;
                 $product->price = $this->product_price;
                 $product->category = $this->product_category;
@@ -199,7 +194,7 @@ class StoreController extends Component
                 $this->product_stock = $product->stock;
                 $this->product_price = $product->price;
                 $this->product_category = $product->category;
-                $this->product_image_url = Storage::url($product->image);
+                $this->product_image_url = $product->image;
             }
 
             $this->setFormHidden();

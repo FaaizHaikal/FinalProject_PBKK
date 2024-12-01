@@ -19,7 +19,7 @@
             </form>
         </div>
 
-        @if ($fileUrl)
+        @if ($file_image)
             @if ($top_confidence == -999)
                 <div
                     class="mb-2 me-2 mt-8 animate-pulse rounded-lg bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 px-5 py-2.5 text-center text-sm font-bold text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-red-100 dark:focus:ring-red-400">
@@ -44,7 +44,7 @@
             @endif
             <div class="">
                 <div class="mt-6 text-center text-sm font-bold text-gray-500">Your File:</div>
-                <img src="{{ asset('/storage' . '/' . $fileUrl) }}" class="mt-4 max-h-80 object-cover" alt="Uploaded Image">
+                <img  src="data:image/jpeg;base64,{{ $file_image }}" class="mt-4 max-h-80 object-cover" alt="Uploaded Image">
             </div>
         @endif
 
@@ -54,6 +54,7 @@
 
 <script>
     window.addEventListener('start_inference', event => {
+        @this.call('testing', 'Hello, Livewire!', 42)
         fetch("https://classify.roboflow.com/shoes-categories/1?api_key=OmssS0x7eCppP0K0FVMU", {
             method: "POST",
             body: event.detail.b64_image,

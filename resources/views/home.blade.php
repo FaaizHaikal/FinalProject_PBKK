@@ -253,7 +253,7 @@
                 @foreach($products as $product)
                     <div class="product-card mb-4" id="{{ $product->id }}">
                         <a href="#" class="block">
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="product image" class="w-full">
+                            <img src="data:image/jpeg;base64,{{ $product->image }}" alt="product image" class="w-full">
                         </a>
                         <div class="card-body">
                             <a href="#">
@@ -359,7 +359,7 @@
             productCard.id = product.id
             productCard.innerHTML = `
                         <a href="#" class="block">
-                            <img src="storage/${product.image}" alt="product image" class="w-full">
+                            <img src="data:image/jpeg;base64,${product.image}" alt="product image" class="w-full">
                         </a>
                         <div class="card-body">
                             <a href="#">

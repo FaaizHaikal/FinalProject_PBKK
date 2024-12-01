@@ -10,7 +10,7 @@ class UploadTest extends Component
 {
     use WithFileUploads;    
     public $photo;
-    public $fileUrl;
+    public $file_image;
 
     public $top_category = '';
     public $top_confidence = -999;
@@ -21,15 +21,12 @@ class UploadTest extends Component
         $this->top_confidence = -999;
 
         $this->Log('Testing');
-        // Store the file
-        $this->fileUrl = $this->photo->store('uploads', 'public');
-        $urls = Storage::url($this->fileUrl);
-        $this->Log($urls);
+        
 
-        $imagePath = storage_path('app/public/' . $this->fileUrl); // Adjust the path if necessary
-        if (file_exists($imagePath)) {
-            $imageData = file_get_contents($imagePath);
-            $base64 = base64_encode($imageData);
+        
+        if ($this->photo != null) {
+            $base64 = base64_encode(file_get_contents($this->photo->getRealPath()));
+            $this->file_image = $base64;
             
             $base64Image = 'data:image/jpeg;base64,' . $base64;
             $this->Log($base64Image); 
@@ -38,12 +35,18 @@ class UploadTest extends Component
             $this->Log('File does not exist.');
         }
     }
+
+    public function testing($message, $number)
+    {
+        $this->log("Message: $message, Number: $number");
+    }
     
     public function render()
     {
         return view('Upload')
             ->layout('layouts.app');
     }
+
 
     public function Log(string | \Stringable $message): void
     {
