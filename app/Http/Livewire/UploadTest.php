@@ -30,6 +30,7 @@ class UploadTest extends Component
             
             $base64Image = 'data:image/jpeg;base64,' . $base64;
             $this->Log($base64Image); 
+            $this->photo = null;
             $this->dispatch('start_inference', b64_image: $base64Image);
         } else {
             $this->Log('File does not exist.');

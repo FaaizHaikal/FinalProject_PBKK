@@ -7,6 +7,7 @@ use App\Http\Livewire\RegisterController;
 use App\Http\Livewire\UploadTest;
 use App\Http\Livewire\StoreController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\QueryController;
 
 $host = parse_url(config('app.url'), PHP_URL_HOST);
 
@@ -25,6 +26,7 @@ Route::get('/', HomeController::class . '@index')->middleware('auth');
 Route::get('/mystore', StoreController::class)->middleware('auth');
 Route::post('/hello', HomeController::class . '@hello');
 Route::post('/signout', HomeController::class . '@SignOut')->middleware('auth');
+Route::get('/search-query/{category}', [QueryController::class, 'index']);
 
 
 /*

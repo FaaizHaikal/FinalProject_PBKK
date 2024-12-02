@@ -36,6 +36,8 @@ class StoreController extends Component
         public $product_category = "";
         public $product_id = null;
         public $product_image_url = null;
+        public $ai_grade = "";
+        public $ai_conf = "";
 
         // form button
         public $isFormHidden = true;
@@ -45,8 +47,7 @@ class StoreController extends Component
             if( $this->isFormHidden == true) {
                 $this->isFormHidden = false;
             } else {
-                $this->isFormHidden = true;
-
+                
                 $this->product_name = null;
                 $this->product_description = null;
                 $this->product_image = null;
@@ -54,6 +55,10 @@ class StoreController extends Component
                 $this->product_price = null;
                 $this->product_category = "";
                 $this->product_id = null;
+                $this->product_image_url = null;
+                $this->isFormHidden = true;
+                $this->ai_grade = "";
+                $this->ai_conf = "";
             }
             Log::info($this->isFormHidden);
         }

@@ -274,6 +274,7 @@
 
     </div>
 
+    <!-- Home.blade.php script -->
     <script>
         const typed = new Typed('.multiple-text', {
             strings: ['Latest Products', 'High Quality Shoes', 'Newest Models'],
@@ -376,6 +377,114 @@
              `;
              productContainer.appendChild(productCard);
         }
+
+    </script>
+
+    <!-- navbar.blade.php script -->
+    <script>
+        const HandleImageSearch = () => {
+
+        // Check if the popup is already created
+        // Create the popup HTML using a template string
+        const popupHTML = `
+        <div id="popup" class="fixed inset-0 bg-gray-400 bg-opacity-40 flex items-center justify-center z-50 transition-all duration-300">
+            <div class="bg-white w-fit p-4 rounded-lg flex justify-center items-center relative">
+                <button onclick="closePopup()" class="absolute top-2 right-2 text-black">&times;</button>
+                <form id="search_form">
+                    <!-- File Input -->
+                    <input
+                        class="block cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none lg:w-96 xl:w-[32rem]"
+                        id="file_input" type="file" accept=".svg, .png, .jpg, .jpeg, .gif" onchange="previewImage(event)">
+                    
+                        <p class="ml-1 mt-1 text-sm text-gray-500" id="file_input_help">SVG, PNG, JPG, JPEG, or GIF</p>
+
+                        <!-- Image Preview -->
+                        <div id="imagePreviewContainer" class="mt-4 hidden">
+                            <img id="imagePreview" class="max-w-full max-h-64 rounded-lg" />
+                        </div>
+                    
+                    <div class="item-center flex justify-center" id="searchDiv" >
+                        <button onclick="HandleSearchForm(event)"
+                            class="mt-7 w-[40%] items-center rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 py-2 text-sm font-semibold text-white hover:bg-gradient-to-l focus:outline-none focus:ring-4 focus:ring-purple-200">
+                            Start Searching
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        `;
+
+        // Insert the popup HTML into the body of the document
+        document.body.innerHTML += popupHTML;  // Append the popup HTML at the end of the body
+        }
+
+        // Close the popup by removing it from the DOM
+        const closePopup = () => {
+        const popup = document.getElementById('popup');
+        if (popup) {
+            popup.remove();  // Remove the popup from the DOM
+        }
+        };
+
+        const previewImage = (event) => {
+            const fileInput = event.target;
+            const file = fileInput.files[0]; 
+
+            if (file) {
+                const reader = new FileReader();
+
+                // When the file is loaded, display it in the image preview
+                reader.onload = async function(e) {
+                    const imagePreview = document.getElementById('imagePreview');
+                    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+
+                    // Set the image source to the file data
+                    imagePreview.src = e.target.result;
+
+                    // Make the preview container visible
+                    imagePreviewContainer.classList.remove('hidden');
+                };
+
+                // Read the file as a data URL
+                reader.readAsDataURL(file);
+            }
+        }
+
+        const HandleSearchForm = (event) => {
+            event.preventDefault();
+            const imagePreview = document.getElementById('imagePreview');
+            //console.log(imagePreview.src)
+            const searchDiv = document.getElementById('searchDiv');
+            searchDiv.innerHTML = `
+                <p class="text-lg text-center text-purple-500">Searching in progress...</p>
+            `;
+
+            fetch("https://classify.roboflow.com/shoes-categories/1?api_key=OmssS0x7eCppP0K0FVMU", {
+            method: "POST",
+            body: imagePreview.src,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                const category = data.top; // Category from the data object
+                const newUrl = `/search-query/${category}`;
+                window.location.href = newUrl;
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error.message);
+            });
+            }
+
+        
 
     </script>
 </body>

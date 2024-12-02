@@ -1,4 +1,6 @@
+
 <nav class="border-gray-200 bg-zinc-100 px-4 py-3 lg:px-6">
+    
             <div class="flex flex-wrap items-center justify-between">
                 <div class="flex items-center justify-start">
                     <button id="toggleSidebar" aria-expanded="true" aria-controls="sidebar"
@@ -26,17 +28,26 @@
 
 
                 <div class="relative mx-10 mt-1 lg:flex-1">
-                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <!-- Search Icon (Left) -->
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex justify-center items-center pl-3">
                         <svg class="h-4 w-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                         </svg>
                     </div>
+                    
+                    <!-- Input field -->
                     <input type="text" name="email" id="searchInput"
                         class="focus:ring-primary-500 focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-white p-2.5 pl-9 text-gray-900 sm:text-sm"
                         placeholder="Search">
+                    
+                    <!-- Camera Button (Right) -->
+                    <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400" onclick="HandleImageSearch()">
+                        <img src="{{ asset('svg/camera.svg') }}" class="w-6 text-gray-400" />
+                    </button>
                 </div>
+
 
 
 

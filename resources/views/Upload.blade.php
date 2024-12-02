@@ -6,9 +6,16 @@
             <form wire:submit="save">
                 <input
                     class="block cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none lg:w-96 xl:w-[32rem]"
-                    id="file_input" type="file" accept=".svg, .png, .jpg, .jpeg, .gif." wire:model="photo">
+                    id="file_input" type="file" accept=".svg, .png, .jpg, .jpeg, .gif." wire:model="photo" onchange="previewImage(event)">
                 <p class="ml-1 mt-1 text-sm text-gray-500" id="file_input_help">SVG, PNG, JPG, JPEG,
                     or GIF</p>
+
+                <!-- Image Preview -->
+                <!-- Image Preview -->
+                <div id="imagePreviewContainer" class="mt-4 @if($photo) block @else hidden @endif">
+                    <img id="imagePreview" class="max-w-full max-h-64 rounded-lg" src="{{ $photo ? $photo->temporaryUrl() : '' }}" />
+                </div>
+
                 <div class="item-center flex justify-center">
                     <button type="submit"
                         class="mt-7 w-[40%] items-center rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 py-2 text-sm font-semibold text-white hover:bg-gradient-to-l focus:outline-none focus:ring-4 focus:ring-purple-200">Start
@@ -82,4 +89,30 @@
                 console.error('There was a problem with the fetch operation:', error.message);
             });
     });
+
+    const previewImage = (event) => {
+            event.preventDefault();
+
+            const fileInput = event.target;
+            const file = fileInput.files[0]; 
+
+            if (file) {
+                const reader = new FileReader();
+
+                // When the file is loaded, display it in the image preview
+                reader.onload = async function(e) {
+                    const imagePreview = document.getElementById('imagePreview');
+                    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+
+                    // Set the image source to the file data
+                    imagePreview.src = e.target.result;
+
+                    // Make the preview container visible
+                    imagePreviewContainer.classList.remove('hidden');
+                };
+
+                // Read the file as a data URL
+                reader.readAsDataURL(file);
+            }
+        }
 </script>
