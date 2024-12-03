@@ -21,6 +21,7 @@ class HomeController extends Controller
        return view('home', compact('userId', 'username', 'email', 'products'));
     }
 
+
     public function SignOut(Request $request)
     {
         try {

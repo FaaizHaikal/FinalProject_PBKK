@@ -76,17 +76,30 @@
                                 <p class="mb-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG, or
                                     PNEG</p>
                                 @if ($product_image_url)
-                                    <img class="h-20 w-20 rounded-lg" src="{{ $product_image_url }}"
+                                    <img class="h-20 w-20 rounded-lg" src="data:image/jpeg;base64,{{ $product_image_url }}"
                                         alt="Product Image">
                                     <input wire:model="product_image"
                                         class="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
                                         aria-describedby="product-image-help" id="product-image" type="file"
                                         accept=".svg, .png, .jpg, .jpeg">
+
+                                        <div id="imagePreviewContainer" class="mt-4 @if($product_image) block @else hidden @endif">
+                                            <img id="imagePreviews" class="max-w-full max-h-64 rounded-lg" src="{{ $product_image ? $product_image->temporaryUrl() : '' }}" />
+                                        </div>
+
                                 @else
                                     <input wire:model="product_image"
                                         class="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
                                         aria-describedby="product-image-help" id="product-image" type="file"
-                                        accept=".svg, .png, .jpg, .jpeg" required>
+                                        accept=".svg, .png, .jpg, .jpeg" required onchange="handleAiGrade(event)">
+                                        
+                                        <div id="imagePreviewContainer" class="mt-4 @if($product_image) block @else hidden @endif">
+                                            <img id="imagePreview" class="max-w-full max-h-64 rounded-lg" src="{{ $product_image ? $product_image->temporaryUrl() : '' }}" />
+
+                                            <span class="mt-4 text-sm text-gray-500 font-semibold">AI Grade: </span>
+                                            <span id="ai_grade" class="text-sm text-gray-500 font-semibold" > {{$ai_grade ? $ai_grade : 'Waiting ...'}} </span>
+                                            <span id="ai_confs" class="text-sm text-gray-500 font-semibold" > {{$ai_conf ? $ai_conf: ''}} </span>
+                                        </div>
                                 @endif
                             </div>
                             <div class="mb-5">
@@ -219,7 +232,7 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="text-sm text-gray-900 dark:text-gray-200">
-                                        <img class="h-20 w-20 rounded-lg" src="{{ asset('storage/' . $product->image) }}"
+                                        <img class="h-20 w-20 rounded-lg" src="data:image/jpeg;base64,{{ $product->image }}"
                                             alt="{{ $product->name }}">
                                     </div>
                                 </td>
@@ -264,4 +277,56 @@
             })
             .catch(error => console.error('Error:', error));
     });
+
+    const handleAiGrade = async (event) => {
+    event.preventDefault();
+
+    // Get the image file from the input
+    const fileInput = document.getElementById('product-image');
+    const file = fileInput.files[0]; // Get the first file selected
+
+    if (!file) {
+        console.log("No file selected.");
+        return; // Exit if no file is selected
+    }
+
+    // Create a FormData object to send the file
+    const formData = new FormData();
+    formData.append('file', file);  // Append the file to FormData
+
+    // Send the file to the external API using fetch
+    try {
+        const response = await fetch("https://classify.roboflow.com/shoes-categories/1?api_key=OmssS0x7eCppP0K0FVMU", {
+            method: "POST",
+            body: formData, // Send the FormData
+            headers: {
+                // No need to set 'Content-Type' as it is handled by FormData
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();  // Parse JSON response
+
+        console.log(data);  // Log the data to see the AI grade
+        // Assuming the response contains an 'ai_grade' field, update the AI grade in the UI
+        document.getElementById('ai_grade').textContent = data.top || 'No grade available';
+        @this.set('ai_grade', data.top);
+
+        const aiConfElement = document.getElementById('ai_confs');
+        if (aiConfElement) {
+            aiConfElement.textContent = data.confidence;
+            @this.set('ai_conf', data.confidence);  // Assuming you are using Livewire or similar
+            console.log("dwada")
+        }
+
+    } catch (error) {
+        console.error('Error fetching AI grade:', error.message);
+        document.getElementById('ai_grade').textContent = 'Error occurred while grading.';
+    }
+}
+
+    
 </script>
