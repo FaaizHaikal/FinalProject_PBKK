@@ -8,6 +8,7 @@ use App\Http\Livewire\UploadTest;
 use App\Http\Livewire\StoreController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QueryController;
+use App\Http\Controllers\CartController;
 
 $host = parse_url(config('app.url'), PHP_URL_HOST);
 
@@ -27,6 +28,10 @@ Route::get('/mystore', StoreController::class)->middleware('auth');
 Route::post('/hello', HomeController::class . '@hello');
 Route::post('/signout', HomeController::class . '@SignOut')->middleware('auth');
 Route::get('/search-query/{category}', [QueryController::class, 'index']);
+Route::post('cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
+Route::delete('cart/remove/{productId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+Route::put('/update/{productId}', [CartController::class, 'updateCart'])->name('cart.update');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
 
 /*

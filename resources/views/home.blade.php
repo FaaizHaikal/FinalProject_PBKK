@@ -265,7 +265,10 @@
                                     <span class="ml-1 text-sm font-medium text-gray-500">5.0</span>
                                 </div>
                             </div>
-                            <button class="btn btn-add-to-cart w-full mt-2">Add to Cart</button>
+                            <form action="{{ route('cart.add', $product->id) }}" method="POST" class="add-to-cart-form" data-product-id="{{ $product->id }}">
+                                @csrf
+                                <button type="submit" class="btn btn-add-to-cart w-full mt-2">Add to Cart</button>
+                            </form>
                         </div>
                     </div>
                 @endforeach
@@ -332,7 +335,36 @@
         var _products;
 
         document.addEventListener('DOMContentLoaded',  async function() {
-            _products = @json($products);
+        _products = @json($products);
+
+             // Select all forms with the 'add-to-cart-form' class
+        const addToCartForms = document.querySelectorAll('.add-to-cart-form');
+
+        addToCartForms.forEach(form => {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent the default form submission (redirect)
+
+                const formData = new FormData(form);
+
+                // Send an AJAX request
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest', // Optional: lets you know this is an AJAX request
+                    }
+                })
+                .then(response => response.json()) // Assuming you return a JSON response from the controller
+                .then(data => {
+                    if (data.success) {
+                        console.log(data)
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
         });
 
         const input = document.getElementById('searchInput');
@@ -377,6 +409,7 @@
              `;
              productContainer.appendChild(productCard);
         }
+        
 
     </script>
 
