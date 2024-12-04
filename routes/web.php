@@ -9,6 +9,7 @@ use App\Http\Livewire\StoreController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QueryController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\LandingController;
 
 $host = parse_url(config('app.url'), PHP_URL_HOST);
 
@@ -22,17 +23,23 @@ $host = parse_url(config('app.url'), PHP_URL_HOST);
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', HomeController::class . '@index')->middleware('auth');
+// Landing Page
+Route::get('/', LandingController::class . '@index');
+// Home page
+Route::get('/home', HomeController::class . '@index')->middleware('auth');
+// Store Page
 Route::get('/mystore', StoreController::class)->middleware('auth');
-Route::post('/hello', HomeController::class . '@hello');
-Route::post('/signout', HomeController::class . '@SignOut')->middleware('auth');
+// Search Operation
 Route::get('/search-query/{category}', [QueryController::class, 'index']);
+// Cart Operation
 Route::post('cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
 Route::delete('cart/remove/{productId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 Route::put('/update/{productId}', [CartController::class, 'updateCart'])->name('cart.update');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-
+// Auth
+Route::post('/signout', HomeController::class . '@SignOut')->middleware('auth');
+// Roboflow Integration
+Route::get('/upload', UploadTest::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -53,4 +60,4 @@ Route::get('/sell-product', function () {
 
 
 Route::get('/counter', Counter::class)->middleware('auth');
-Route::get('/upload', UploadTest::class);
+Route::post('/hello', HomeController::class . '@hello');
