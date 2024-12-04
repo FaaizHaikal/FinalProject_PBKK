@@ -24,7 +24,7 @@ class LoginController extends Component
     {
         if (Auth::check()) {
             Log::info('Already Authenticaated');
-            return redirect()->intended('/');
+            return redirect()->intended('/home');
         }
 
         try {
@@ -37,7 +37,7 @@ class LoginController extends Component
                     $user = User::where('email',  $this->username_or_email)->first();
                     $this->dispatch('user-login', userId: $user->id);
                     $request->session()->regenerate();
-                    return redirect()->intended('/');
+                    return redirect()->intended('/home');
                 }
                 
                 $this->password = '';
@@ -53,7 +53,7 @@ class LoginController extends Component
                      $this->dispatch('user-login', userId: $user->id);
                      $request->session()->regenerate();
                      session()->regenerate();
-                     return redirect()->intended('/');
+                     return redirect()->intended('/home');
                 }
 
                 $this->password = '';
@@ -82,7 +82,7 @@ class LoginController extends Component
     {
         if (Auth::check()) {
             Log::info('Already Authenticaated');
-            return redirect()->intended('/');
+            return redirect()->intended('/home');
         }
     }
 
