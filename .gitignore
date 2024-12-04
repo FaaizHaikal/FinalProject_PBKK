@@ -19,3 +19,6 @@ yarn-error.log
 /.vscode
 /app/Roboflow/venv
 /app/Roboflow/node_modules
+.vercel
+./vercel.json
+vercel.json
