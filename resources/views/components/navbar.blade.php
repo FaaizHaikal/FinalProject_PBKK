@@ -22,7 +22,7 @@
                     </button>
                     <a href="/home" class="mr-4 flex">
                         <img src="{{ asset('favicon/logo-64x64.png') }}" class="ml-2.5 mr-2.5 mt-0.5 h-8" />
-                        <span class="self-center whitespace-nowrap text-2xl font-semibold">KickVerse</span>
+                        <span class="self-center whitespace-nowrap text-2xl font-semibold">KickFlicker</span>
                     </a>
                 </div>
 
