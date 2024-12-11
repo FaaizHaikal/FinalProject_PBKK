@@ -11,7 +11,7 @@
         <div class="container mx-auto flex justify-between items-center px-2">
             <a href="/" class="text-2xl font-bold flex items-center text-yellow-400">
                 <i class="fas fa-shoe-prints mr-4"></i> <!-- Shoe icon -->
-                Kickverse
+                KickFlicker
             </a>            
             <nav>
                 <ul class="flex space-x-8">
@@ -45,7 +45,7 @@
    <!-- Hero Section -->
 <!-- Hero Section -->
 <section class="bg-blue-500 text-white h-screen flex flex-col justify-center items-center">
-    <h1 class="text-4xl md:text-5xl font-bold mb-4">Welcome to Kickverse</h1>
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">Welcome to KickFlicker</h1>
     <p class="text-lg md:text-xl mb-6">Find Your Perfect Pair of Shoes</p>
 
     <div class="flex flex-row gap-8">
@@ -71,9 +71,9 @@
     <!-- About Us Section -->
     <section id="about-us" class="py-16 bg-neutral-950">
     <div class="text-center max-w-4xl mx-auto">
-        <h2 class="text-3xl font-bold text-yellow-400 mb-6">About Kickverse</h2>
+        <h2 class="text-3xl font-bold text-yellow-400 mb-6">About KickFlicker</h2>
         <p class="text-lg text-gray-200 mb-8">
-            Kickverse is your one-stop-shop for high-quality shoes for every occasion. Whether you're looking for casual sneakers, performance-oriented running shoes, or stylish boots, we have it all. Our goal is to provide the perfect fit for every foot and make sure you step out in style.
+            KickFlicker is your one-stop-shop for high-quality shoes for every occasion. Whether you're looking for casual sneakers, performance-oriented running shoes, or stylish boots, we have it all. Our goal is to provide the perfect fit for every foot and make sure you step out in style.
         </p>
     </div>
 </section>
@@ -87,7 +87,7 @@
             <!-- Logo Section -->
             <div class="w-full md:w-1/4 mb-8 md:mb-0">
                 <a href="/" class="text-2xl font-bold flex items-center text-yellow-400">
-                    Kickverse
+                    KickFlicker
                 </a>
                 <p class="mt-4 text-gray-400">Your ultimate destination for quality shoes. Explore our collection and find your perfect fit.</p>
             </div>
@@ -131,7 +131,7 @@
 
         <!-- Footer Bottom Section: Social Media Links -->
         <div class="mt-12 border-t border-gray-700 pt-6 text-center">
-            <p class="text-gray-400 text-sm">&copy; 2024 Kickverse. All rights reserved.</p>
+            <p class="text-gray-400 text-sm">&copy; 2024 KickFlicker. All rights reserved.</p>
             <div class="mt-4 flex justify-center space-x-6">
                 <!-- Social Icons -->
                 <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">
