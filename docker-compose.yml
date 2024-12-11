@@ -5,49 +5,59 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: laravel_app
+    container_name: laravel-app
     ports:
       - "9000:9000"
     volumes:
-      - .:/var/www/html
-      - ./storage:/var/www/html/storage
+      - .:/var/www
+    networks:
+      - app-network
     environment:
-      APP_ENV: local
-      APP_KEY: base64:SomeRandomKeyForLocalEnv
-      APP_DEBUG: 1 # Set to 0 for production
-      APP_URL: http://localhost
-      DB_CONNECTION: pgsql
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_DATABASE: laravel
-      DB_USERNAME: postgres
-      DB_PASSWORD: secret
-      DB_SSL_MODE: disable
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=laravel
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=secret
     depends_on:
       - db
+    command: |
+      bash -c "
+        cp .env.example .env &&
+        composer install &&
+        php artisan key:generate &&
+        php artisan migrate &&
+        php artisan serve --host=0.0.0.0 --port=9000
+      "
 
   db:
-    image: postgres:15
-    container_name: postgres_db
+    image: postgres:latest
+    container_name: postgres-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: laravel
-    ports:
-      - "2345:5432"
+    networks:
+      - app-network
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
-  npm:
+  frontend:
     image: node:18
-    container_name: npm_dev
-    working_dir: /var/www/html
+    container_name: laravel-frontend
+    working_dir: /var/www
     volumes:
-      - .:/var/www/html
+      - .:/var/www
+    networks:
+      - app-network
     ports:
       - "5173:5173"
-    command: >
-      bash -c "npm install && npm run dev"
+    command: bash -c "npm install && npm run dev --host"
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
-  pg_data:
+  postgres_data:
+    driver: local
