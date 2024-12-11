@@ -16,16 +16,14 @@ WORKDIR /var/www/html
 
 COPY . .
 
-RUN chown -R www-data:www-data /var/www/
-USER www-data
+RUN chown -R root /var/www/
+RUN find /var/www/html -type d -exec chmod u+rwx {} +
+RUN find /var/www/html -type f -exec chmod u+rw {} +
 
 RUN composer update
 RUN composer install --no-dev --optimize-autoloader
 
 RUN npm install && npm run build
-
-USER root
-RUN chmod -R 775 /var/www/html
 
 EXPOSE 9000 5173
 
