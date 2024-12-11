@@ -19,7 +19,7 @@ services:
     environment:
       - DB_CONNECTION=pgsql
       - DB_HOST=db
-      - DB_PORT=5432
+      - DB_PORT=2345
       - DB_DATABASE=fp_pbkk
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
@@ -28,7 +28,7 @@ services:
     image: postgres:13
     container_name: postgres-db
     ports:
-      - "5432:5432"
+      - "2345:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
