@@ -1,5 +1,8 @@
 
-<nav class="border-gray-200 bg-zinc-100 px-4 py-3 lg:px-6">
+<div class="text-xs py-1 text-center bg-slate-200 font-medium text-gray-500">
+    This is just a test site for demonstration purposes. Please contact us for more detail !
+</div>
+<nav class="border-gray-200 bg-zinc-100 px-4 py-3 lg:px-6 sticky top-0 z-50">
     
             <div class="flex flex-wrap items-center justify-between">
                 <div class="flex items-center justify-start">
