@@ -46,7 +46,7 @@
 
             @if ($isFormHidden == false)
                 <div id="product-form-modal" class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
-                    <div class="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg md:max-w-2xl lg:max-w-4xl">
+                    <div class="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg md:max-w-2xl lg:max-w-4xl max-h-[80%] overflow-y-auto">
                         <button id="close-modal-btn" wire:click="setFormHidden" class="absolute right-2 top-2 text-gray-500 hover:text-gray-700">
                             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -84,7 +84,7 @@
                                         accept=".svg, .png, .jpg, .jpeg">
 
                                         <div id="imagePreviewContainer" class="mt-4 @if($product_image) block @else hidden @endif">
-                                            <img id="imagePreviews" class="max-w-full max-h-64 rounded-lg" src="{{ $product_image ? $product_image->temporaryUrl() : '' }}" />
+                                            <img id="imagePreviews" class="rounded-lg" src="{{ $product_image ? $product_image->temporaryUrl() : '' }}" />
                                         </div>
 
                                 @else
