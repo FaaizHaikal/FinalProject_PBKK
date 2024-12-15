@@ -29,27 +29,28 @@
             <tbody>
                 @foreach ($cart as $productId => $item)
                     <tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-6 text-sm text-gray-700 text-center">
-                            <div class="flex items-center justify-center h-20 w-20 rounded-lg">
+                        <td class="px-6 py-6 text-lg text-gray-700 text-center">
+                            <div class="flex items-center justify-center h-20 w-full mx-auto">
                                 <img src="data:image/jpeg;base64,{{ $item['image'] }}" alt="{{ $item['name'] }}" class="object-cover rounded-md mr-4 h-20 w-20">
                                 <span>{{ $item['name'] }}</span>
                             </div>
                         </td>
-                        <td class="px-6 py-6 text-sm text-gray-700 text-center">
+                        <td class="px-6 py-6 text-lg text-gray-700 text-center">
                             Rp{{ number_format($item['price'], 0, ',', '.') }}
                         </td>
-                        <td class="px-6 py-6 text-sm text-gray-700 text-center">
+                        <td class="px-6 py-6 text-lg text-gray-700 text-center">
                             <form class="flex items-center justify-center" action="{{ route('cart.update', $productId) }}" method="POST">
                                 @csrf
                                 @method('PUT')
-                                <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1" class="w-16 p-1 text-center border rounded-md mr-2">
-                                <button type="submit" class="text-blue-600 hover:underline">Update</button>
+                                <button type="submit" name="quantity" value="{{ $item['quantity'] - 1 }}" class="text-blue-600 hover:underline px-2 rounded-full bg-gray-200 w-8 h-8 flex items-center justify-center">-</button>
+                                <span class="mx-2">{{ $item['quantity'] }}</span>
+                                <button type="submit" name="quantity" value="{{ $item['quantity'] + 1 }}" class="text-blue-600 hover:underline px-2 rounded-full bg-gray-200 w-8 h-8 flex items-center justify-center">+</button>
                             </form>
                         </td>
-                        <td class="px-6 py-6 text-sm text-gray-700 text-center">
+                        <td class="px-6 py-6 text-lg text-gray-700 text-center">
                             Rp{{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}
                         </td>
-                        <td class="px-6 py-6 text-sm text-gray-700 text-center">
+                        <td class="px-6 py-6 text-lg text-gray-700 text-center">
                             <form action="{{ route('cart.remove', $productId) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
